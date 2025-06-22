@@ -1,0 +1,14 @@
+# Virtual environment directory
+.venv/
+
+# Python compiled files
+__pycache__/
+*.pyc
+
+# Trained model file (can be large and is regenerated)
+best_fraud_model.pkl
+
+# Optionally, ignore your raw data files if they are large or sensitive.
+# It's common to not commit raw data.
+# sample_fraud_data.csv
+# data_to_be_predicted.csv
