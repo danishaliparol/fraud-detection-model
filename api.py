@@ -6,9 +6,10 @@ import sys
 
 # --- Configuration ---
 MODEL_FILE_NAME = 'best_fraud_model.pkl'
-TRAIN_FILE_PATH = 'train.csv' # Used to infer original column order for input validation
+TRAIN_FILE_PATH = 'sample_fraud_data.csv' # Used to infer original column order for input validation
 TARGET_COLUMN_NAME = 'is_fraud'
-ID_COLUMNS = ['transaction_id', 'customer_id'] # Columns to ignore for model input
+ID_COLUMNS = ['transaction_id', 'timestamp', 'currency', 'merchant_id', 'device_id',
+                  'customer_id', 'last_login_time'] # Columns to ignore for model input
 
 
 app = Flask(__name__)
@@ -94,7 +95,7 @@ def predict():
         for i, pred in enumerate(predictions):
             item = {}
             # Include original IDs if they exist in the input_df
-            for id_col in ID_COLUMNS:
+            for id_col in ['transaction_id', 'timestamp', 'amount']:
                 if id_col in input_df.columns:
                     item[id_col] = input_df.iloc[i][id_col]
             # Add all original features back to the result, or just the prediction

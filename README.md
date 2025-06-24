@@ -1,270 +1,133 @@
-# Fraud Detection Model: End-to-End Pipeline with Real-time API
-
+Fraud Detection Model: End-to-End Pipeline with Real-time API
 This repository provides a comprehensive solution for building, deploying, and serving a machine learning-powered fraud detection system. It covers data preprocessing, handling class imbalance, model training with hyperparameter tuning, model persistence, and a real-time prediction API using Flask and Gunicorn.
 
-## Table of Contents
+Table of Contents
+Features
 
--   [Features](#features)
--   [Supported Python Version](#supported-python-version)
--   [Installation](#installation)
--   [Project Structure](#project-structure)
--   [Usage](#usage)
-    -   [Data Preparation](#data-preparation)
-    -   [Step 1: Train and Save the Model](#step-1-train-and-save-the-model)
-    -   [Step 2: Run the Real-time Prediction API](#step-2-run-the-real-time-prediction-api)
-    -   [Step 3: Test the API Endpoint](#step-3-test-the-api-endpoint)
--   [Dockerization](#dockerization)
--   [Model Details](#model-details)
-    -   [Preprocessing](#preprocessing)
-    -   [Imbalance Handling Strategies](#imbalance-handling-strategies)
-    -   [Machine Learning Models & Hyperparameter Tuning](#machine-learning-models--hyperparameter-tuning)
-    -   [Model Persistence](#model-persistence)
--   [Evaluation Metrics](#evaluation-metrics)
--   [Troubleshooting Common Issues](#troubleshooting-common-issues)
--   [Contributing](#contributing)
--   [License](#license)
+Supported Python Version
 
-## Features
+Installation
 
--   **Data Loading from CSV**: Reads training and scoring data directly from local CSV files.
--   **ID Column Handling**: Automatically identifies and removes specified identifier columns (`transaction_id`, `customer_id`, etc.) from datasets before training and prediction. These IDs are preserved and included in the API's output.
--   **Robust Data Preprocessing**:
-    -   **Missing Value Imputation**: Uses K-Nearest Neighbors (KNN) imputation for numerical features and most-frequent imputation for categorical features.
-    -   **Feature Scaling**: Applies `StandardScaler` to numerical features.
-    -   **Dynamic Categorical Encoding**: Intelligently applies `OneHotEncoder` for low-cardinality categorical features (< 10 unique values) and `OrdinalEncoder` for high-cardinality features (>= 10 unique values). Both encoders handle unseen categories gracefully in new data.
--   **Comprehensive Class Imbalance Strategies**: Evaluates and compares different approaches:
-    -   No sampling
-    -   SMOTE (Synthetic Minority Oversampling Technique) only
-    -   Random Undersampling only
-    -   A combination of SMOTE and Random Undersampling
--   **Multiple Machine Learning Models**: Benchmarks the performance of:
-    -   Logistic Regression
-    -   Random Forest Classifier
-    -   XGBoost Classifier (eXtreme Gradient Boosting)
--   **Hyperparameter Tuning**: Utilizes `GridSearchCV` with `StratifiedKFold` cross-validation to find optimal hyperparameters for each model and sampling strategy combination, optimizing for **F1-score**.
--   **XGBoost Class Weighting**: Incorporates tuning of `scale_pos_weight` for `XGBClassifier` to explicitly address class imbalance during its training.
--   **Best Model Selection**: Automatically identifies the overall best model and sampling strategy based on the highest F1-score achieved.
--   **Model Persistence**: Saves the entire trained model pipeline (including preprocessor and best estimator) as a `.pkl` file using `joblib`.
--   **Real-time Prediction API**: A Flask application served by Gunicorn provides a RESTful endpoint for low-latency predictions on new transaction data.
--   **Docker Support**: Includes a `Dockerfile` for easy containerization and consistent deployment across environments.
+Project Structure
 
-## Supported Python Version
+Usage
 
-This project is specifically designed and tested with **Python 3.12.4**. It is highly recommended to use this exact version for consistent local development and production deployments to avoid dependency conflicts.
+Data Preparation
 
-## Installation
+Step 1: Train and Save the Model
 
-1.  **Clone the repository**:
-    ```bash
-    git clone [https://github.com/your-username/fraud-detection-model.git](https://github.com/your-username/fraud-detection-model.git)
-    cd fraud-detection-model
-    ```
-2.  **Ensure Python 3.12.4 is Installed**:
-    Verify your Python version:
-    ```bash
-    python --version
-    # or
-    python3.12 --version
-    ```
-    If not installed, download and install Python 3.12.4 from [python.org](https://www.python.org/downloads/). Ensure it's added to your system's PATH.
+Step 2: Run the Real-time Prediction API
 
-3.  **Create a Python 3.12.4 virtual environment** (recommended for managing dependencies):
-    ```bash
-    # On Windows (Command Prompt/PowerShell - use 'py -3.12' if 'python' isn't 3.12):
-    py -3.12 -m venv .venv
-    # On macOS/Linux (Bash/Zsh - use 'python3.12' if 'python' isn't 3.12):
-    python3.12 -m venv .venv
-    ```
-    *This explicitly creates the virtual environment using your Python 3.12.4 executable.*
+Step 3: Test the API Endpoint
 
-4.  **Activate the virtual environment**:
-    ```bash
-    # On Windows (Command Prompt/PowerShell):
-    .\.venv\Scripts\activate
-    # On macOS/Linux (Bash/Zsh):
-    source ./.venv/bin/activate
-    ```
-    You should see `(.venv)` in your terminal prompt.
+Dockerization
 
-5.  **Install dependencies** from `requirements.txt`:
-    ```bash
-    pip install -r requirements.txt
-    ```
+Model Details
 
-## Project Structure
-Great news that fraud_detection.py ran successfully! This means your model is trained, evaluated, and the best_fraud_model.pkl file has been created.
+Preprocessing
 
-Now, let's get your project published on GitHub and then set up and run your real-time prediction API.
+Imbalance Handling Strategies
 
-How to Publish This Project in GitHub
-Publishing your project to GitHub involves initializing a Git repository, adding your files, committing them, and then pushing them to a new repository on GitHub.
+Machine Learning Models & Hyperparameter Tuning
 
-Ensure Git is Installed:
-If you don't have Git installed, download it from https://git-scm.com/.
+Model Persistence
 
-Initialize Git Repository in Your Project Folder:
+Evaluation Metrics
 
-Open your terminal or command prompt.
-Navigate to your fraud_detection_project directory (e.g., cd path/to/fraud_detection_project).
-Initialize a new Git repository:
-Bash
+Troubleshooting Common Issues
 
-git init
-Create a .gitignore file:
-This file tells Git which files and folders to ignore (i.e., not track or upload to GitHub). It's crucial for keeping your repository clean and secure (e.g., avoiding uploading large model files or virtual environments).
+Contributing
 
-In your fraud_detection_project folder, create a new file named .gitignore (make sure it starts with a dot).
-Add the following content to .gitignore:
-# Virtual environment directory
-.venv/
+License
 
-# Python compiled files
-__pycache__/
-*.pyc
+Features
+Data Loading from CSV: Reads training and scoring data directly from local CSV files.
 
-# Trained model file (can be large and is regenerated)
-best_fraud_model.pkl
+ID Column Handling: Automatically identifies and removes specified identifier columns (transaction_id, customer_id, etc.) from datasets before training and prediction. These IDs are preserved and included in the API's output.
 
-# Optionally, ignore your raw data files if they are large or sensitive.
-# It's common to not commit raw data.
-# train.csv
-# score.csv
-Save the .gitignore file.
-Add Your Files to the Git Repository:
-This stages all relevant files for the first commit.
+Robust Data Preprocessing:
 
-Bash
+Missing Value Imputation: Uses K-Nearest Neighbors (KNN) imputation for numerical features and most-frequent imputation for categorical features.
 
-git add .
-Commit Your Code Locally:
-This saves the current state of your files in your local Git history.
+Feature Scaling: Applies StandardScaler to numerical features.
 
-Bash
+Dynamic Categorical Encoding: Intelligently applies OneHotEncoder for low-cardinality categorical features (< 10 unique values) and OrdinalEncoder for high-cardinality features (>= 10 unique values). Both encoders handle unseen categories gracefully in new data.
 
-git commit -m "Initial commit: End-to-end fraud detection model with API and Docker setup"
-Create a New Repository on GitHub:
+Comprehensive Class Imbalance Strategies: Evaluates and compares different approaches:
 
-Go to https://github.com/new in your web browser.
-Give your new repository a name (e.g., fraud-detection-model).
-Choose whether it's Public or Private.
-Crucially: Do NOT check "Add a README file" or "Add .gitignore" here, as you've already created them locally.
-Click "Create repository".
-Link Your Local Repository to GitHub and Push Your Code:
-After creating the repository on GitHub, you'll see a page with instructions. Copy the two lines under "…or push an existing local repository from the command line". They will look similar to this (replace your-username with your actual GitHub username and fraud-detection-model with your repository name):
+No sampling
 
-Bash
+SMOTE (Synthetic Minority Oversampling Technique) only
 
-git remote add origin https://github.com/your-username/fraud-detection-model.git
-git branch -M main
-git push -u origin main
-Paste these commands one by one into your terminal and press Enter after each.
-You might be prompted to enter your GitHub username and password/Personal Access Token.
-Your project, including fraud_detection.py, api.py, requirements.txt, Dockerfile, and README.md (but excluding .venv/ and best_fraud_model.pkl due to .gitignore), is now published on GitHub!
+Random Undersampling only
 
-Detailed README.md Format
-Here is the comprehensive README.md content. You should create a file named README.md (no extension) in your fraud_detection_project folder and paste this content into it.
+A combination of SMOTE and Random Undersampling
 
-Markdown
+Multiple Machine Learning Models: Benchmarks the performance of:
 
-# Fraud Detection Model: End-to-End Pipeline with Real-time API
+Logistic Regression
 
-This repository provides a comprehensive solution for building, deploying, and serving a machine learning-powered fraud detection system. It covers data preprocessing, handling class imbalance, model training with hyperparameter tuning, model persistence, and a real-time prediction API using Flask and Gunicorn.
+Random Forest Classifier
 
-## Table of Contents
+XGBoost Classifier (eXtreme Gradient Boosting)
 
--   [Features](#features)
--   [Supported Python Version](#supported-python-version)
--   [Installation](#installation)
--   [Project Structure](#project-structure)
--   [Usage](#usage)
-    -   [Data Preparation](#data-preparation)
-    -   [Step 1: Train and Save the Model](#step-1-train-and-save-the-model)
-    -   [Step 2: Run the Real-time Prediction API](#step-2-run-the-real-time-prediction-api)
-    -   [Step 3: Test the API Endpoint](#step-3-test-the-api-endpoint)
--   [Dockerization](#dockerization)
--   [Model Details](#model-details)
-    -   [Preprocessing](#preprocessing)
-    -   [Imbalance Handling Strategies](#imbalance-handling-strategies)
-    -   [Machine Learning Models & Hyperparameter Tuning](#machine-learning-models--hyperparameter-tuning)
-    -   [Model Persistence](#model-persistence)
--   [Evaluation Metrics](#evaluation-metrics)
--   [Troubleshooting Common Issues](#troubleshooting-common-issues)
--   [Contributing](#contributing)
--   [License](#license)
+Hyperparameter Tuning: Utilizes GridSearchCV with StratifiedKFold cross-validation to find optimal hyperparameters for each model and sampling strategy combination, optimizing for F1-score.
 
-## Features
+XGBoost Class Weighting: Incorporates tuning of scale_pos_weight for XGBClassifier to explicitly address class imbalance during its training.
 
--   **Data Loading from CSV**: Reads training and scoring data directly from local CSV files.
--   **ID Column Handling**: Automatically identifies and removes specified identifier columns (`transaction_id`, `customer_id`, etc.) from datasets before training and prediction. These IDs are preserved and included in the API's output.
--   **Robust Data Preprocessing**:
-    -   **Missing Value Imputation**: Uses K-Nearest Neighbors (KNN) imputation for numerical features and most-frequent imputation for categorical features.
-    -   **Feature Scaling**: Applies `StandardScaler` to numerical features.
-    -   **Dynamic Categorical Encoding**: Intelligently applies `OneHotEncoder` for low-cardinality categorical features (< 10 unique values) and `OrdinalEncoder` for high-cardinality features (>= 10 unique values). Both encoders handle unseen categories gracefully in new data.
--   **Comprehensive Class Imbalance Strategies**: Evaluates and compares different approaches:
-    -   No sampling
-    -   SMOTE (Synthetic Minority Oversampling Technique) only
-    -   Random Undersampling only
-    -   A combination of SMOTE and Random Undersampling
--   **Multiple Machine Learning Models**: Benchmarks the performance of:
-    -   Logistic Regression
-    -   Random Forest Classifier
-    -   XGBoost Classifier (eXtreme Gradient Boosting)
--   **Hyperparameter Tuning**: Utilizes `GridSearchCV` with `StratifiedKFold` cross-validation to find optimal hyperparameters for each model and sampling strategy combination, optimizing for **F1-score**.
--   **XGBoost Class Weighting**: Incorporates tuning of `scale_pos_weight` for `XGBClassifier` to explicitly address class imbalance during its training.
--   **Best Model Selection**: Automatically identifies the overall best model and sampling strategy based on the highest F1-score achieved.
--   **Model Persistence**: Saves the entire trained model pipeline (including preprocessor and best estimator) as a `.pkl` file using `joblib`.
--   **Real-time Prediction API**: A Flask application served by Gunicorn provides a RESTful endpoint for low-latency predictions on new transaction data.
--   **Docker Support**: Includes a `Dockerfile` for easy containerization and consistent deployment across environments.
+Best Model Selection: Automatically identifies the overall best model and sampling strategy based on the highest F1-score achieved.
 
-## Supported Python Version
+Model Persistence: Saves the entire trained model pipeline (including preprocessor and best estimator) as a .pkl file using joblib.
 
-This project is specifically designed and tested with **Python 3.12.4**. It is highly recommended to use this exact version for consistent local development and production deployments to avoid dependency conflicts.
+Real-time Prediction API: A Flask application served by Gunicorn provides a RESTful endpoint for low-latency predictions on new transaction data.
 
-## Installation
+Docker Support: Includes a Dockerfile for easy containerization and consistent deployment across environments.
 
-1.  **Clone the repository**:
-    ```bash
-    git clone [https://github.com/your-username/fraud-detection-model.git](https://github.com/your-username/fraud-detection-model.git)
-    cd fraud-detection-model
-    ```
-2.  **Ensure Python 3.12.4 is Installed**:
-    Verify your Python version:
-    ```bash
-    python --version
-    # or
-    python3.12 --version
-    ```
-    If not installed, download and install Python 3.12.4 from [python.org](https://www.python.org/downloads/). Ensure it's added to your system's PATH.
+Supported Python Version
+This project is specifically designed and tested with Python 3.12.4. It is highly recommended to use this exact version for consistent local development and production deployments to avoid dependency conflicts.
 
-3.  **Create a Python 3.12.4 virtual environment** (recommended for managing dependencies):
-    ```bash
-    # On Windows (Command Prompt/PowerShell - use 'py -3.12' if 'python' isn't 3.12):
-    py -3.12 -m venv .venv
-    # On macOS/Linux (Bash/Zsh - use 'python3.12' if 'python' isn't 3.12):
-    python3.12 -m venv .venv
-    ```
-    *This explicitly creates the virtual environment using your Python 3.12.4 executable.*
+Installation
+Clone the repository:
 
-4.  **Activate the virtual environment**:
-    ```bash
-    # On Windows (Command Prompt/PowerShell):
-    .\.venv\Scripts\activate
-    # On macOS/Linux (Bash/Zsh):
-    source ./.venv/bin/activate
-    ```
-    You should see `(.venv)` in your terminal prompt.
+git clone [https://github.com/danishaliparol/fraud-detection-model.git](https://github.com/danishaliparol/fraud-detection-model.git)
+cd fraud-detection-model
 
-5.  **Install dependencies** from `requirements.txt`:
-    ```bash
-    pip install -r requirements.txt
-    ```
+Ensure Python 3.12.4 is Installed:
+Verify your Python version:
 
-## Project Structure
+python --version
+# or
+python3.12 --version
 
+If not installed, download and install Python 3.12.4 from python.org. Ensure it's added to your system's PATH.
+
+Create a Python 3.12.4 virtual environment (recommended for managing dependencies):
+
+# On Windows (Command Prompt/PowerShell - use 'py -3.12' if 'python' isn't 3.12):
+py -3.12 -m venv .venv
+# On macOS/Linux (Bash/Zsh - use 'python3.12' if 'python' isn't 3.12):
+python3.12 -m venv .venv
+
+This explicitly creates the virtual environment using your Python 3.12.4 executable.
+
+Activate the virtual environment:
+
+# On Windows (Command Prompt/PowerShell):
+.\.venv\Scripts\activate
+# On macOS/Linux (Bash/Zsh):
+source ./.venv/bin/activate
+
+You should see (.venv) in your terminal prompt.
+
+Install dependencies from requirements.txt:
+
+pip install -r requirements.txt
+
+Project Structure
 fraud_detection_project/
 ├── fraud_detection.py        # Main script for training, evaluation, batch prediction
 ├── api.py                    # Flask API for real-time predictions
-├── sample_fraud_data.csv                # Your training data (e.g., 10k rows)
+├── sample_fraud_data.csv                 # Your training data (e.g., 10k rows)
 ├── data_to_be_predicted.csv                 # Your unseen data for scoring/prediction (e.g., a few rows for testing)
 ├── requirements.txt          # Python package dependencies
 ├── Dockerfile                # Instructions for building the Docker image
@@ -272,18 +135,19 @@ fraud_detection_project/
 ├── best_fraud_model.pkl      # Generated after the first successful training run
 └── README.md                 # This documentation file
 
-## Usage
+Usage
+Data Preparation
+sample_fraud_data.csv:
 
-### Data Preparation
+Contains your training data.
 
-1.  **`sample_fraud_data.csv`**:
-    * Contains your training data.
-    * **Must include all feature columns, your target variable** (e.g., `is_fraud`), and **any ID columns** (e.g., `transaction_id`, `customer_id`).
-    * **Important**: Update `target_column_name` and `id_columns` variables in `fraud_detection.py` and `api.py` to precisely match your CSV headers.
+Must include all feature columns, your target variable (e.g., is_fraud), and any ID columns (e.g., transaction_id, customer_id).
 
-    Example `sample_fraud_data.csv` structure:
-    ```csv
-    'transaction_id', 'timestamp', 'amount', 'currency', 'merchant_id',
+Important: Update target_column_name and id_columns variables in fraud_detection.py and api.py to precisely match your CSV headers.
+
+Example sample_fraud_data.csv structure:
+
+       'transaction_id', 'timestamp', 'amount', 'currency', 'merchant_id',
        'merchant_category', 'transaction_type', 'channel', 'location',
        'device_id', 'ip_address', 'customer_id', 'account_age_days',
        'customer_segment', 'credit_score', 'avg_transaction_amt',
@@ -293,17 +157,19 @@ fraud_detection_project/
        'unusual_time_flag', 'unusual_location_flag', 'velocity_flag',
        'geo_velocity_kmph', 'recent_failed_logins', 'device_change_count',
        'is_fraud'
-    ...
-    ```
+...
 
-2.  **`data_to_be_predicted.csv`**:
-    * Contains unseen data for which you want predictions.
-    * **Must have the same feature columns and ID columns as `sample_fraud_data.csv`, in the same order.**
-    * **Must NOT contain the target column.**
+data_to_be_predicted.csv:
 
-    Example `data_to_be_predicted.csv` structure:
-    ```csv
-    'transaction_id', 'timestamp', 'amount', 'currency', 'merchant_id',
+Contains unseen data for which you want predictions.
+
+Must have the same feature columns and ID columns as sample_fraud_data.csv, in the same order.
+
+Must NOT contain the target column.
+
+Example data_to_be_predicted.csv structure:
+
+       'transaction_id', 'timestamp', 'amount', 'currency', 'merchant_id',
        'merchant_category', 'transaction_type', 'channel', 'location',
        'device_id', 'ip_address', 'customer_id', 'account_age_days',
        'customer_segment', 'credit_score', 'avg_transaction_amt',
@@ -312,13 +178,201 @@ fraud_detection_project/
        'is_new_device', 'geo_distance_from_home', 'ip_risk_score',
        'unusual_time_flag', 'unusual_location_flag', 'velocity_flag',
        'geo_velocity_kmph', 'recent_failed_logins', 'device_change_count'
-    ...
-    ```
-    **Place both `sample_fraud_data.csv` and `data_to_be_predicted.csv` in the root of your `fraud_detection_project` directory.**
+...
 
-### Step 1: Train and Save the Model
+Place both sample_fraud_data.csv and data_to_be_predicted.csv in the root of your fraud_detection_project directory.
 
-Run the main script to train the model, evaluate it, and save the best-performing pipeline. **You've already done this successfully!**
+Step 1: Train and Save the Model
+Run the main script to train the model, evaluate it, and save the best-performing pipeline.
 
-```bash
 python fraud_detection.py
+
+First run: The script will print messages indicating that no pre-trained model was found. It will load data from sample_fraud_data.csv, remove id_columns, proceed with training, evaluation, save best_fraud_model.pkl, and then make predictions on score.csv.
+
+Subsequent runs: If best_fraud_model.pkl already exists, the script will load it and directly perform predictions on data_to_be_predicted.csv (if available), skipping retraining.
+
+Step 2: Run the Real-time Prediction API
+Once best_fraud_model.pkl is generated, you can start the API for real-time predictions.
+
+Ensure api.py and requirements.txt are set up:
+
+Make sure you have the api.py file in your project root.
+
+Make sure requirements.txt contains Flask and gunicorn.
+
+Crucially, ensure you have installed the dependencies from requirements.txt in your Python 3.12.4 virtual environment (steps for this are detailed in the Installation section).
+
+Activate your virtual environment:
+If you've closed your terminal or deactivated the environment, activate it again:
+
+# On Windows:
+.\.venv\Scripts\activate
+# On macOS/Linux:
+source ./.venv/bin/activate
+
+Start the Gunicorn server:
+In your terminal, within the activated virtual environment and your fraud_detection_project directory, run:
+
+gunicorn -w 4 -b 0.0.0.0:8000 api:app
+
+You should see messages from Gunicorn indicating workers starting and the Flask app loading the model. The API will be listening on http://127.0.0.1:8000.
+
+Step 3: Test the API Endpoint
+With the API running in one terminal, open another terminal or use a tool like Postman or Insomnia to send a POST request to the /predict endpoint.
+
+API Endpoint: http://127.0.0.1:8000/predict
+Method: POST
+Content-Type: application/json
+
+Example curl request:
+
+curl -X POST \
+  [http://127.0.0.1:8000/predict](http://127.0.0.1:8000/predict) \
+  -H 'Content-Type: application/json' \
+  -d '[
+    {
+      "transaction_id": "TXN123456789",
+      "timestamp": "2025-06-16T10:45:00Z",
+      "amount": 253.75,
+      "currency": "USD",
+      "merchant_id": "M987654",
+      "merchant_category": "Electronics",
+      "transaction_type": "Online",
+      "channel": "Mobile",
+      "location": "Riyadh, SA",
+      "device_id": "DEV12345XYZ",
+      "ip_address": "192.168.1.42",
+      "customer_id": "CUST001122",
+      "account_age_days": 420,
+      "customer_segment": "Gold",
+      "credit_score": 720,
+      "avg_transaction_amt": 187.6,
+      "txn_frequency_last_30d": 15,
+      "txn_amt_last_24h": 460.9,
+      "last_login_time": "2025-06-16T09:55:00Z",
+      "home_location": "Jeddah, SA",
+      "device_type": "Smartphone",
+      "os": "Android",
+      "browser": "Chrome",
+      "device_trust_score": 0.87,
+      "is_new_device": 0,
+      "geo_distance_from_home": 845.2,
+      "ip_risk_score": 0.32,
+      "unusual_time_flag": 0,
+      "unusual_location_flag": 1,
+      "velocity_flag": 0,
+      "geo_velocity_kmph": 98.4,
+      "recent_failed_logins": 1,
+      "device_change_count": 0
+    },
+    {
+      "transaction_id": "TXN123456768",
+      "timestamp": "2025-06-16T10:45:00Z",
+      "amount": 253.75,
+      "currency": "USD",
+      "merchant_id": "M987654",
+      "merchant_category": "Electronics",
+      "transaction_type": "Online",
+      "channel": "Mobile",
+      "location": "Riyadh, SA",
+      "device_id": "DEV12345XYZ",
+      "ip_address": "192.168.1.42",
+      "customer_id": "CUST001125",
+      "account_age_days": 120,
+      "customer_segment": "Gold",
+      "credit_score": 460,
+      "avg_transaction_amt": 187.6,
+      "txn_frequency_last_30d": 15,
+      "txn_amt_last_24h": 460.9,
+      "last_login_time": "2025-06-16T09:55:00Z",
+      "home_location": "Jeddah, SA",
+      "device_type": "Smartphone",
+      "os": "Android",
+      "browser": "Chrome",
+      "device_trust_score": 0.21,
+      "is_new_device": 0,
+      "geo_distance_from_home": 10000.2,
+      "ip_risk_score": 0.88,
+      "unusual_time_flag": 0,
+      "unusual_location_flag": 1,
+      "velocity_flag": 0,
+      "geo_velocity_kmph": 22.1,
+      "recent_failed_logins": 1,
+      "device_change_count": 0
+    }
+  ]'
+
+Expected JSON Response:
+
+[
+  {
+    "transaction_id": 10001,
+    "customer_id": 501,
+    "predicted_is_fraud": 0
+  },
+  {
+    "transaction_id": 10002,
+    "customer_id": 502,
+    "predicted_is_fraud": 1
+  }
+]
+
+Dockerization
+To containerize this application for consistent deployment:
+
+Build the Docker Image:
+In your project root directory (where Dockerfile is located), run:
+
+docker build -t fraud-detection-app .
+
+This command builds a Docker image named fraud-detection-app.
+
+Run the Docker Container:
+To run the Flask API inside a Docker container, mapping port 8000 from the container to your host machine:
+
+docker run -p 8000:8000 fraud-detection-app
+
+You can then test the API using curl as shown in Step 3: Test the API Endpoint.
+
+For production deployment, consider pushing your image to a container registry (like Docker Hub, Google Container Registry, AWS ECR) and deploying to a cloud platform (e.g., Google Cloud Run, AWS Fargate, Kubernetes).
+
+Model Details
+Preprocessing
+The _create_preprocessor method dynamically sets up a ColumnTransformer to handle different feature types:
+
+Numerical Imputation & Scaling: KNNImputer(n_neighbors=5) for missing values, followed by StandardScaler for all numerical features.
+
+Categorical Imputation & Encoding:
+
+SimpleImputer(strategy='most_frequent') fills missing categorical values.
+
+Low Cardinality (< 10 unique values): OneHotEncoder(handle_unknown='ignore') is used, which outputs zeros for any new, unseen categories during prediction.
+
+High Cardinality (>= 10 unique values): OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1) is used, assigning a specific -1 value to new, unseen categories.
+
+Imbalance Handling Strategies
+The train function evaluates how effectively different sampling strategies (applied within imblearn.pipeline.Pipeline) improve model performance on imbalanced data:
+
+None: Baseline with no resampling applied.
+
+SMOTE_Only: SMOTE(sampling_strategy=0.1) to synthesize new minority class samples.
+
+Undersampling_Only: RandomUnderSampler(sampling_strategy=0.5) to reduce the number of majority class samples.
+
+SMOTE_Undersampling: A sequential combination of SMOTE followed by Random Undersampling.
+
+Machine Learning Models & Hyperparameter Tuning
+The script evaluates the following classification models for each sampling strategy:
+
+Logistic Regression: Hyperparameters C (regularization strength) and penalty (l1 or l2) are tuned. Supports class_weight.
+
+Random Forest Classifier: Tuned for n_estimators (number of trees) and max_depth. Supports class_weight.
+
+XGBoost Classifier: Tuned for n_estimators, learning_rate, max_depth, subsample, colsample_bytree. Crucially, its scale_pos_weight parameter is also tuned using a range around the calculated ratio of negative to positive samples, providing explicit class weighting.
+
+GridSearchCV with StratifiedKFold (3 splits) is employed for exhaustive hyperparameter search and robust cross-validation. The F1-score is the primary metric for optimization and best model selection due to its effectiveness in balancing precision and recall for imbalanced datasets.
+
+Model Persistence
+The FraudDetectionModel instance, which internally holds the best preprocessing steps, chosen sampling strategy, and the trained classifier, is serialized to best_fraud_model.pkl using Python's joblib library. This serialized file allows:
+
+Fast Reloading: Rapid deployment of the trained model without needing to retrain.
